@@ -5,7 +5,7 @@ var pubnub = require('pubnub').init({
 
 setInterval(function(){
   pubnub.publish({
-  channel: "book-message",
+  channel: "extinction",
   error: function(e){console.log("Pubnub error")},
   message: 'hi',
   callback: function(){console.log('Msg sent')}
