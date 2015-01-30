@@ -11,7 +11,7 @@ ble.on('ready', function(err) {
   //   subscribe_key: 'sub-c-fc32499e-a8b4-11e4-bf84-0619f8945a4f'
   // });
 
-  function countClearSend(counter){
+  function countClearSend(){
     // pubnub.publish({
     //   channel: "extinction",
     //   error: function(e){console.log("Pubnub error");},
@@ -19,13 +19,13 @@ ble.on('ready', function(err) {
     //   callback: function(){console.log('Count sent', counter);}
     // });
     
-    console.log('Counter', count);
+    console.log('Counter', counter);
     counter = 0; // Reset counter so next 5s takes in new data
   }
 
   console.log('Scanning...');
   ble.startScanning();
-  setInterval(countClearSend, 5000, counter);
+  setInterval(countClearSend, 5000);
 
 });
 
