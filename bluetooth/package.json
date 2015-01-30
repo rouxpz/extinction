@@ -1,0 +1,11 @@
+{
+  "name": "extinction-bluetooth",
+  "version": "0.0.0",
+  "description": "Bluetooth Code for Extinction Project",
+  "main": "bluetooth.js",
+  "author": "Sarah GP",
+  "dependencies": {
+    "ble-ble113a": "^0.1.12",
+    "pubnub": "^3.7.8"
+  }
+}
