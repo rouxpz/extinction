@@ -15,7 +15,7 @@ void draw() {
   
   for (int i = 0; i < animals.size(); i++) {
     Animal a = animals.get(i);
-    a.speed = map(mouseX, 0, width, 0, 10);
+    a.speed = map(mouseX, 0, width, 0, 20);
     a.advance();
     a.render();
     
@@ -27,23 +27,23 @@ void draw() {
   }
   
   for (int i = 0; i < gears.length; i++) {
-    gears[i].speed = map(mouseX, 0, width, 0, 0.2);
+    gears[i].speed = map(mouseX, 0, width, 0, 0.5);
     gears[i].render();
     
-    println(gears[i].speed);
+    // println(gears[i].speed);
   }
  
 }
 
-void mousePressed() {
+void mousePressed() {  
   
-  birth();
-  
+  birth();  
 }
 
 void birth() {
   
   Animal a = new Animal();
+  a.edge = gears[29].x + 12.5;
   animals.add(a);
   
 }
