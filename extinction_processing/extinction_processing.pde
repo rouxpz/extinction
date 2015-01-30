@@ -1,4 +1,5 @@
 Gear [] gears = new Gear [30];
+ArrayList<Animal> animals = new ArrayList<Animal>();
 
 void setup() {
   size (1920/2, 1080/2);
@@ -11,12 +12,38 @@ void setup() {
 
 void draw() {
   background(0);
-
+  
+  for (int i = 0; i < animals.size(); i++) {
+    Animal a = animals.get(i);
+    a.speed = map(mouseX, 0, width, 0, 10);
+    a.advance();
+    a.render();
+    
+    if (a.dead) {
+      animals.remove(a);
+      println(animals.size());
+    }
+    
+  }
+  
   for (int i = 0; i < gears.length; i++) {
     gears[i].speed = map(mouseX, 0, width, 0, 0.2);
     gears[i].render();
     
     println(gears[i].speed);
   }
+ 
 }
 
+void mousePressed() {
+  
+  birth();
+  
+}
+
+void birth() {
+  
+  Animal a = new Animal();
+  animals.add(a);
+  
+}
