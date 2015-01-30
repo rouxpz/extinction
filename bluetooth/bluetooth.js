@@ -1,10 +1,24 @@
 var tessel = require('tessel'),
     blelib = require('ble-ble113a'),
-    ble = blelib.use(tessel.port['A']);
+    ble = blelib.use(tessel.port['A']),
+    port = tessel.port['GPIO'],
+    pin = port.pin['G4'];
+
 
 var counter = 0;
 
+function motor(){
+  var highest = 1000;
+  pin.pwmDutyCycle(count/highest);
+}
+
+function zeroOut(){
+  counter = 0; // Reset counter so next 50s takes in new data
+}
+
 ble.on('ready', function(err) {
+
+  // Setup
 
   var pubnub = require('pubnub').init({
     publish_key: 'pub-c-c68b82e8-a483-44c6-9efb-29ee321615df',
@@ -16,19 +30,37 @@ ble.on('ready', function(err) {
       channel: "extinction",
       error: function(e){console.log("Pubnub error");},
       message: '' + counter,
-      callback: function(){console.log('Count sent', counter);}
+      callback: function(){
+        console.log('Count sent', counter);
+        zeroOut();
+      }
     });
-    
     console.log('Counter', counter);
-    counter = 0; // Reset counter so next 5s takes in new data
   }
 
+  function history(){
+    pubnub.history({
+      channel: "extinction",
+      callback: function(m){
+        var messages = m[0];
+        console.log('History', messages)
+      }
+    })
+  }
+
+  // Do all the things
+
+  // Motor
+  port.pwmFrequency(10000);
+  pin.pull(pulldown);
+
+  // Bluetooth
   console.log('Scanning...');
   ble.startScanning({allowDuplicates:true});
-  setInterval(countClearSend, 50000);
+  // setInterval(history, 10000);
+  setInterval(countClearSend, 50000, counter);
 
 });
-
 
 ble.on('discover', function(peripheral) {
   counter++;
