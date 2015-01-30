@@ -4,6 +4,7 @@ class Animal {
   float edge;
   float speed;
   boolean dead;
+  float gravity;
 
   Animal () {
     x = -25;
@@ -14,7 +15,8 @@ class Animal {
 
     if (x-25 >= edge + 12.5) {
       x += 3;
-      y += 10;
+      y += gravity;
+      gravity += 0.98;
     } else {
       x = x + speed;
     }
