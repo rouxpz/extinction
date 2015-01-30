@@ -24,8 +24,8 @@ ble.on('ready', function(err) {
   }
 
   console.log('Scanning...');
-  ble.startScanning();
-  setInterval(countClearSend, 5000);
+  ble.startScanning({allowDuplicates:true});
+  setInterval(countClearSend, 50000);
 
 });
 
