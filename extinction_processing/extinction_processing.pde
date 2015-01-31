@@ -51,14 +51,14 @@ void draw() {
   image(belt, 0, height/2-30);
 
   for (int i = 0; i < gears.length; i++) {
-    gears[i].speed = map(connections, 100, 800, 0.01, 0.5);
+    gears[i].speed = map(connections, 100, 1000, 0.01, 0.5);
     gears[i].render();
 
     // println(gears[i].speed);
   }
   for (int i = 0; i < animals.size (); i++) {
     Animal a = animals.get(i);
-    a.speed = map(connections, 100, 800, 0.3, 20);
+    a.speed = map(connections, 100, 1000, 0.3, 20);
     a.gravity = 15;
     a.advance();
     a.render();
@@ -72,7 +72,7 @@ void draw() {
   if (animals.size() > 0) {
     last = animals.size()-1;
 
-    interval = round(map(connections, 115, 800, 120, 0));
+    interval = round(map(connections, 10, 1000, 200, 0));
     // interval = round(map(mouseX, 0, width, 120, 10));
     // println("Interval:" + interval);
     if (animals.get(last).x >= -20) {
