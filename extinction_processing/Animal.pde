@@ -7,12 +7,13 @@ class Animal {
   float gravity;
   
   float r;
+  int a;
   
   PImage file;
 
   Animal (PImage _file) {
-    x = -100;
-    y = height/2 - 120;
+    x = -175;
+    y = height/2 - 190;
     
     file = _file;
     r = 0;
@@ -20,12 +21,12 @@ class Animal {
 
   void advance() {
 
-    if (x + 20 >= edge + 12.5) {
+    if (x + 40 >= edge + 10) {
 
        pushMatrix();
         translate(x, y);
         rotate(r);
-              x += 2;
+              x += 3;
       y += gravity;
       gravity += 0.98;
       popMatrix();
@@ -37,16 +38,19 @@ class Animal {
       x = x + speed;
     }
 
-    if (y >= height + 25) {
+    if (y >= height - 250) {
+      a = 0;
       dead = true;
+    } else {
+      a = 255;
     }
   }
 
   void render() {
     noStroke();
 
-    tint(255, 255);
-    file.resize(100, 100);
+    tint(255, a);
+    file.resize(175, 175);
     image(file, x, y);
     // ellipse(x, y, 50, 50);
   }
