@@ -5,15 +5,19 @@ class Animal {
   float speed;
   boolean dead;
   float gravity;
+  
+  PImage file;
 
-  Animal () {
-    x = -25;
-    y = height/2 - 40.5;
+  Animal (PImage _file) {
+    x = -100;
+    y = height/2 - 100;
+    
+    file = _file;
   }
 
   void advance() {
 
-    if (x-25 >= edge + 12.5) {
+    if (x + 20 >= edge + 12.5) {
       x += 3;
       y += gravity;
       gravity += 0.98;
@@ -28,8 +32,10 @@ class Animal {
 
   void render() {
     noStroke();
-    fill(255, 200);
 
-    ellipse(x, y, 50, 50);
+    tint(255, 255);
+    file.resize(100, 100);
+    image(file, x, y);
+    // ellipse(x, y, 50, 50);
   }
 }
