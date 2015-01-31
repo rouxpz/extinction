@@ -8,7 +8,7 @@ var tessel = require('tessel'),
 
 var counter = 0;
 
-function motor(first, second){
+function motor(first, second){  // Right now sending the same to each bc only 1 diode; with 2, greater variation
   console.log('Motor called');
   firstPin.pwmDutyCycle(first/1000);
   secondPin.pwmDutyCycle(second/1000);
@@ -36,7 +36,7 @@ ble.on('ready', function(err) {
       error: function(e){console.log("Pubnub error");},
       message: '' + counter,
       callback: function(){
-        console.log('Count sent', counter);
+        console.log('Count sent');
       }
     });
     console.log('Counter', counter);
@@ -59,20 +59,20 @@ ble.on('ready', function(err) {
         switch(true){
           case (counter <= (highest * 0.25)):
             console.log('1');
-            motor(500, 0);
+            motor(500, 500);
             break;
 
-          case (counter < (highest * 0.5)):
+          case (counter < (highest * 0.35)):
             console.log('2');
-            motor(1000, 0);
+            motor(650, 650);
             break;
 
-          case (counter < (highest - 150)):
+          case (counter < (highest * .75)):
             console.log('3');
-            motor(1000, 500);
+            motor(800, 800);
             break;
 
-          case (counter >= (highest - 150)):
+          case (counter >= (highest * .75)):
             console.log('4');
             motor(1000, 1000);
             break;
@@ -100,11 +100,11 @@ ble.on('ready', function(err) {
   port.pwmFrequency(10000);
   firstPin.pull(pulldown);
   secondPin.pull(pulldown);
+  // motor(650, 650); // Testing motor only
 
   // Bluetooth
   console.log('Scanning...'); 
   ble.startScanning({allowDuplicates:true});
-  // setInterval(history, 10000);
   setInterval(sendMotor, 55000);
   setInterval(countClearSend, 50000);
 
