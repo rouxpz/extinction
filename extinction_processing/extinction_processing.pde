@@ -1,4 +1,4 @@
-int gearNum = 40;
+int gearNum = 42;
 Gear [] gears = new Gear [gearNum];
 ArrayList<Animal> animals = new ArrayList<Animal>();
 
@@ -47,18 +47,18 @@ void draw() {
   // background.resize(1920/2, 1080/2);
   image(background, 0, 0);
   tint(255, 255);
-  belt.resize(1020, 60);
+  belt.resize(1075, 60);
   image(belt, 0, height/2-30);
 
   for (int i = 0; i < gears.length; i++) {
-    gears[i].speed = map(connections, 115, 800, 0.01, 0.5);
+    gears[i].speed = map(connections, 100, 800, 0.01, 0.5);
     gears[i].render();
 
     // println(gears[i].speed);
   }
   for (int i = 0; i < animals.size (); i++) {
     Animal a = animals.get(i);
-    a.speed = map(connections, 115, 800, 0.3, 20);
+    a.speed = map(connections, 100, 800, 0.3, 20);
     a.gravity = 15;
     a.advance();
     a.render();
@@ -81,7 +81,7 @@ void draw() {
         count = 0;
       } else {
         count++;
-        println(count);
+        // println(count);
       }
     }
   }
@@ -101,9 +101,9 @@ void birth() {
 
   time = hour();
   // println(time);
-  if (time == 22) {
+  if (time >= 23) {
     select = 16;
-  } else if (time == 21) {
+  } else if (time == 22) {
     select = round(random(8, 16));
   } else if (time == 20) {
     select = round(random(15));

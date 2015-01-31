@@ -21,7 +21,7 @@ class Animal {
 
   void advance() {
 
-    if (x + 40 >= edge + 10) {
+    if (x + 70 >= edge) {
 
        pushMatrix();
         translate(x, y);
