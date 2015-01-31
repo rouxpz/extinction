@@ -10,7 +10,7 @@ var counter = 0;
 function motor(){
   var highest = 1000;
   console.log('Motor called');
-  pin.pwmDutyCycle(400/highest);
+  pin.pwmDutyCycle(800/highest);
 }
 
 function zeroOut(){
