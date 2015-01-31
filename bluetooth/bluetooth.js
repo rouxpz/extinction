@@ -2,15 +2,16 @@ var tessel = require('tessel'),
     blelib = require('ble-ble113a'),
     ble = blelib.use(tessel.port['A']),
     port = tessel.port['GPIO'],
-    pin = port.pin['G4'];
+    firstPin = port.pin['G4'],
+    secondPin = port.pin['G5'];
 
 
 var counter = 0;
 
 function motor(){
-  var highest = 1000;
   console.log('Motor called');
-  pin.pwmDutyCycle(800/highest);
+  firstPin.pwmDutyCycle(1000/1000);
+  secondPin.pwmDutyCycle(1000/1000);
 }
 
 function zeroOut(){
@@ -53,7 +54,8 @@ ble.on('ready', function(err) {
 
   // Motor
   port.pwmFrequency(10000);
-  pin.pull(pulldown);
+  firstPin.pull(pulldown);
+  secondPin.pull(pulldown);
   motor();
 
   // Bluetooth
