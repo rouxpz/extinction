@@ -8,15 +8,18 @@ var tessel = require('tessel'),
 
 var counter = 0;
 
-function motor(){
+function motor(first, second){
   console.log('Motor called');
-  firstPin.pwmDutyCycle(1000/1000);
-  secondPin.pwmDutyCycle(1000/1000);
+  firstPin.pwmDutyCycle(first/1000);
+  secondPin.pwmDutyCycle(second/1000);
 }
 
 function zeroOut(){
   counter = 0; // Reset counter so next 50s takes in new data
 }
+
+
+// Once the module is ready
 
 ble.on('ready', function(err) {
 
@@ -40,6 +43,47 @@ ble.on('ready', function(err) {
     zeroOut();
   }
 
+  function sendMotor(){
+    pubnub.history({
+      channel: "extinction",
+      count: 10,
+      callback: function(m){
+        console.log('history:', m);
+        var data = m[0],
+            highest = 0;
+
+        for (var i = 0, l = data.length; i < l; i++){
+          (data[i] > highest) && (highest = data[i]);
+        }
+
+        switch(true){
+          case (counter <= (highest * 0.25)):
+            console.log('1');
+            motor(500, 0);
+            break;
+
+          case (counter < (highest * 0.5)):
+            console.log('2');
+            motor(1000, 0);
+            break;
+
+          case (counter < (highest - 150)):
+            console.log('3');
+            motor(1000, 500);
+            break;
+
+          case (counter >= (highest - 150)):
+            console.log('4');
+            motor(1000, 1000);
+            break;
+
+          default:
+            console.log('Switch error');
+        }
+      }
+    });
+  }
+
   function history(){
     pubnub.history({
       channel: "extinction",
@@ -56,12 +100,12 @@ ble.on('ready', function(err) {
   port.pwmFrequency(10000);
   firstPin.pull(pulldown);
   secondPin.pull(pulldown);
-  motor();
 
   // Bluetooth
   console.log('Scanning...'); 
   ble.startScanning({allowDuplicates:true});
-  setInterval(history, 10000);
+  // setInterval(history, 10000);
+  setInterval(sendMotor, 55000);
   setInterval(countClearSend, 50000);
 
 });
