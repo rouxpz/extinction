@@ -9,7 +9,8 @@ var counter = 0;
 
 function motor(){
   var highest = 1000;
-  pin.pwmDutyCycle(count/highest);
+  console.log('Motor called');
+  pin.pwmDutyCycle(400/highest);
 }
 
 function zeroOut(){
@@ -32,10 +33,10 @@ ble.on('ready', function(err) {
       message: '' + counter,
       callback: function(){
         console.log('Count sent', counter);
-        zeroOut();
       }
     });
     console.log('Counter', counter);
+    zeroOut();
   }
 
   function history(){
@@ -53,12 +54,13 @@ ble.on('ready', function(err) {
   // Motor
   port.pwmFrequency(10000);
   pin.pull(pulldown);
+  motor();
 
   // Bluetooth
-  console.log('Scanning...');
+  console.log('Scanning...'); 
   ble.startScanning({allowDuplicates:true});
-  // setInterval(history, 10000);
-  setInterval(countClearSend, 50000, counter);
+  setInterval(history, 10000);
+  setInterval(countClearSend, 50000);
 
 });
 
