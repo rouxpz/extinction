@@ -6,21 +6,33 @@ class Animal {
   boolean dead;
   float gravity;
   
+  float r;
+  
   PImage file;
 
   Animal (PImage _file) {
     x = -100;
-    y = height/2 - 100;
+    y = height/2 - 120;
     
     file = _file;
+    r = 0;
   }
 
   void advance() {
 
     if (x + 20 >= edge + 12.5) {
-      x += 3;
+
+       pushMatrix();
+        translate(x, y);
+        rotate(r);
+              x += 2;
       y += gravity;
       gravity += 0.98;
+      popMatrix();
+      r += 0.3;
+      
+
+      
     } else {
       x = x + speed;
     }

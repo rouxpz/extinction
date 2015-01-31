@@ -5,15 +5,23 @@ ArrayList<Animal> animals = new ArrayList<Animal>();
 PImage [] images = new PImage[17];
 
 PImage background;
+PImage belt;
+PImage trash;
 JSONArray data;
 
 int connections;
+int count;
+int interval;
+int select;
+int time;
 
 void setup() {
   size (1920/2, 1080/2);
   smooth();
   collectData();
   background = loadImage("background.jpg");
+  belt = loadImage("belt.png");
+  trash = loadImage("trash.png");
   
   for (int i = 0; i < images.length; i++) {
     images[i] = loadImage("" + i + ".png");
@@ -22,17 +30,24 @@ void setup() {
   for (int i = 0; i < gears.length; i++) {
     gears[i] = new Gear(25*i, height/2);
   }
+  
+  count = 0;
+  // time = 19;
 }
 
 void draw() {
   
   if (frameCount % 3600 == 0) {
-    collectData();
+    thread("collectData");
+    // collectData();
   }
-  background(0);
+  background(200);
   tint(255, 100);
   background.resize(1920/2, 1080/2);
   image(background, 0, 0);
+  tint(255, 255);
+  belt.resize(765, 60);
+  image(belt, 0, height/2-30);
 
   for (int i = 0; i < animals.size (); i++) {
     Animal a = animals.get(i);
@@ -43,7 +58,7 @@ void draw() {
 
     if (a.dead) {
       animals.remove(a);
-      println(animals.size());
+      // println(animals.size());
     }
   }
 
@@ -53,16 +68,45 @@ void draw() {
 
     // println(gears[i].speed);
   }
+  
+  interval = round(map(connections, 50, 1000, 120, 30));
+  // interval = round(map(mouseX, 0, width, 120, 30));
+  // println("Interval:" + interval);
+  
+  if (count >= interval) {
+    birth();
+    count = 0;
+  } else {
+    count++;
+  }
+  // println("Count:" + count);
+  
+  trash.resize(250, 250);
+  image(trash, width-280, height-200);
 }
 
 void mousePressed() {  
 
   birth();
-  println("clicked");
+  time++;
 }
 
 void birth() {
-  int select = round(random(17));
+  
+  time = hour();
+  // println(time);
+  if (time == 22) {
+    select = 16;
+  } else if (time == 21) {
+    select = round(random(8, 16));
+  } else if (time == 20) {
+    select = round(random(15));
+  } else  {
+    select = round(random(7));
+    
+  }
+  // select = round(random(16));
+  // println(select);
   Animal a = new Animal(images[select]);
   a.edge = gears[gearNum-1].x + 12.5;
   animals.add(a);
@@ -72,5 +116,5 @@ void collectData() {
   data = loadJSONArray("https://pubsub-1.pubnub.com/v2/history/sub-key/sub-c-fc32499e-a8b4-11e4-bf84-0619f8945a4f/channel/extinction");
   JSONArray messages = data.getJSONArray(0);
   connections = messages.getInt(messages.size()-1);
-  println(connections);
+  println("Data collected");
 }
